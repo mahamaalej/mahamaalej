@@ -1,0 +1,25 @@
+from odoo import models, fields, api
+
+
+class Test1Classroom(models.Model):
+    _name = 'test1.classroom'
+    classroom_name = fields.Char(string='name')
+    code = fields.Char()
+
+    student_ids = fields.One2many('test1.student', 'classroom_id')
+
+    professor_ids = fields.Many2many('test1.professor', string='prof_class_rel')
+    subject_ids = fields.Many2many('test1.subject', string='class_sub_rel')
+
+    num_prof = fields.Integer(string='number of professors', compute='comp_prof')
+    num_sub = fields.Integer(string='number of subjects', compute='comp_sub')
+    num_stu = fields.Integer(string='number of students', compute='comp_stu')
+
+    def comp_prof(self):
+        self.num_prof = len(self.professor_ids)
+
+    def comp_sub(self):
+        self.num_sub = len(self.subject_ids)
+
+    def comp_stu(self):
+        self.num_stu = len(self.student_ids)
